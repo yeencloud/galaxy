@@ -34,6 +34,7 @@ jobs:
         with:
           build_args: GOOS=linux GOARCH=amd64 ARCH=amd64
           context: ./
+          registry: ghcr.io
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest-amd64
@@ -48,6 +49,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/arm64
           push: true
+          registry: ghcr.io
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest-arm64
           no-cache: true
 
