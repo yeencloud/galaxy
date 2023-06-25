@@ -36,7 +36,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest-amd64
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest-amd64
           no-cache: true
 
       - name: Build ARM64
@@ -48,11 +48,11 @@ jobs:
           file: ./Dockerfile
           platforms: linux/arm64
           push: true
-          tags: ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest-arm64
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest-arm64
           no-cache: true
 
       - name: Create new manifest
-        run: docker buildx imagetools create -t ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest-amd64 ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:latest-arm64
+        run: docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest-amd64 ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest-arm64
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
