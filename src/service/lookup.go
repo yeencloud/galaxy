@@ -1,40 +1,35 @@
 package service
 
 import (
-	"github.com/gorpc-experiments/galaxy/src/domain"
 	"github.com/rs/zerolog/log"
-	"strings"
+	"github.com/yeencloud/ServiceCore/serviceError"
+	"github.com/yeencloud/galaxy/src/domain"
 )
 
-func (t *Galaxy) LookUp(args *domain.LookUpRequest, quo *domain.LookUpResponse) error {
-	log.Info().Str("method", args.ServiceMethod).Msg("Looking up method...")
+func (t *Galaxy) LookUp(args domain.LookUpRequest) (domain.LookUpResponse, *serviceError.Error) {
+	log.Info().Str("service", args.Service).Str("method", args.Method).Msg("Looking up method...")
 
-	method := strings.Split(args.ServiceMethod, ".")
+	var response domain.LookUpResponse
 
-	if len(method) != 2 {
-		err := domain.ErrInvalidMethodName
-		log.Err(err).Msg("Unable to look up method")
-		return err
-	}
+	service := args.Service
+	method := args.Method
 
-	module := method[0]
-	service := method[1]
+	log.Info().Str("service", service).Str("method", method).Msg("Looking up method")
 
-	log.Info().Str("module", module).Str("service", service).Msg("Looking up method")
-
-	for _, v := range t.ServiceLibrary {
-		if v.Name == module {
-			for _, s := range v.Service {
-				if s.Name == service {
-					quo.Address = s.Instance.Address
-					log.Info().Str("method", args.ServiceMethod).Str("at", quo.Address).Msg("Method found")
-					return nil
+	for _, s := range t.ServiceLibrary {
+		if s.Name == service {
+			for _, m := range s.Methods {
+				if m.Name == method {
+					response.Address = m.Instance.Address
+					response.Port = m.Instance.Port
+					log.Info().Str("service", service).Str("method", args.Method).Str("at", response.Address).Msg("Method found")
+					return response, nil
 				}
 			}
 		}
 	}
 
-	log.Warn().Str("method", args.ServiceMethod).Msg("Method not found")
+	log.Warn().Str("service", service).Str("method", args.Method).Msg("Method not found")
 
-	return nil
+	return domain.LookUpResponse{}, serviceError.Trace(domain.ErrMethodNotFound)
 }

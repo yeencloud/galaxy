@@ -1,9 +1,11 @@
 package domain
 
 type LookUpRequest struct {
-	ServiceMethod string
+	Service string
+	Method  string
 }
 
 type LookUpResponse struct {
 	Address string
+	Port    int
 }

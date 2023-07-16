@@ -9,19 +9,19 @@ type Host struct {
 // An Instance represents a running service, it can have multiple hosts (pods) that are running the same service
 type Instance struct {
 	Address string
+	Port    int
 	Hosts   []Host
 }
 
-// A Service represents a function of a module that can be called remotely like creating a user, saving a specific data, etc
-type Service struct {
+// A Methods represents a function of a module that can be called remotely like creating a user, saving a specific data, etc
+type Methods struct {
 	Name     string
 	Instance Instance
 }
 
-// A Module represents a collection of services, it's a major component of the system like Authentication, Notifications, Storage, etc...
+// A Service represents a collection of services, it's a major component of the system like Authentication, Notifications, Storage, etc...
 // it can have multiple services
-type Module struct {
-	Name string
-
-	Service []Service
+type Service struct {
+	Name    string
+	Methods []Methods
 }

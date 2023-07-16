@@ -1,14 +1,8 @@
 package domain
 
-type RegisterRequest struct {
-	//Component any
-	Address    string
-	Components []string
+import (
+	servicecore "github.com/yeencloud/ServiceCore"
+)
 
-	Version int
-	Host    string
-}
-
-type RegisterResponse struct {
-	Success bool
-}
+type RegisterRequest servicecore.RegisterRequest
+type RegisterResponse servicecore.RegisterResponse

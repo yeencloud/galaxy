@@ -1,14 +1,23 @@
 package main
 
 import (
-	"github.com/gorpc-experiments/galaxy/src/service"
+	"github.com/rs/zerolog/log"
 	"github.com/yeencloud/ServiceCore"
+	"github.com/yeencloud/galaxy/src/service"
 )
 
 func main() {
-	ServiceCore.SetupLogging()
-
 	galaxy := service.NewGalaxy()
 
-	ServiceCore.PublishMicroService(galaxy, false)
+	sh, err := servicecore.NewServiceHost(galaxy, "Galaxy", false)
+
+	if err != nil {
+		log.Err(err).Msg("Failed to start service")
+		return
+	}
+	err = sh.Listen()
+
+	if err != nil {
+		log.Err(err).Msg("Failed to listen")
+	}
 }

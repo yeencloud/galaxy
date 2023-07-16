@@ -1,9 +1,11 @@
 package domain
 
-import "errors"
+import (
+	"github.com/yeencloud/ServiceCore/serviceError"
+	"net/http"
+)
 
-var ErrInvalidMethodName = errors.New("Invalid method name")
-var ErrNoComponentsToRegister = errors.New("No components to register")
-var ErrMultipleModuleExports = errors.New("Multiple module exports are not supported")
-var ErrApiVersionMismatch = errors.New("API version mismatch")
-var ErrHealthFunctionNotExported = errors.New("Health function not exported")
+var (
+	ErrInvalidMethodName = serviceError.ErrorDescription{HttpCode: http.StatusBadRequest, String: "invalid method name"}
+	ErrMethodNotFound    = serviceError.ErrorDescription{HttpCode: http.StatusNotFound, String: "Method not found"}
+)

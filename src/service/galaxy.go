@@ -1,15 +1,15 @@
 package service
 
-import "github.com/gorpc-experiments/galaxy/src/domain"
+import "github.com/yeencloud/galaxy/src/domain"
 
 type Galaxy struct {
-	ServiceLibrary []domain.Module
+	ServiceLibrary []domain.Service
 }
 
 func NewGalaxy() *Galaxy {
 	galaxy := new(Galaxy)
 
-	galaxy.ServiceLibrary = []domain.Module{}
+	galaxy.ServiceLibrary = []domain.Service{}
 
 	return galaxy
 }
